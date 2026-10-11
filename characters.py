@@ -1,4 +1,5 @@
 import pygame
+
 from settings import *
 
 # Base statistics class
@@ -10,14 +11,35 @@ class NPC(pygame.sprite.Sprite):
         self.game = game
         self.scene = scene
         self.name = name
-        self.image = pygame.Surface((TILE_SIZE,TILE_SIZE*2))
-        self.image.fill(COLOURS["white"])
+        self.import_images(f'assets/characters/{self.name}/')
+        self.frame_index = 0
+        self.image = self.animations['idle'][self.frame_index].convert_alpha()
         self.rect = self.image.get_frect(topleft=pos)
-        self.speed = 100
+        self.speed = 60
         self.force = 2000
         self.acc = vec(0,0)
         self.vel = vec(0,0)
         self.fric = -15
+
+
+    def import_images(self,path):
+        self.animations = self.game.get_animations(path)
+
+        for animation in self.animations.keys():
+            full_path = path + animation
+            self.animations[animation] = self.game.get_images(full_path)
+
+    def animate(self,state,fps,loop=True):
+        self.frame_index += fps
+
+        if self.frame_index >= len(self.animations[state])-1:
+            if loop:
+                self.frame_index = 0
+            else:
+                self.frame_index = len(self.animations[state])-1
+
+        self.image = self.animations[state][int(self.frame_index)]
+
 
     def physics(self,dt):
         # X-axis
@@ -34,6 +56,7 @@ class NPC(pygame.sprite.Sprite):
 
     def update(self,dt):
         self.physics(dt)
+        self.animate('idle', dt)
 
 
 class Player(NPC):
@@ -58,3 +81,4 @@ class Player(NPC):
     def update(self,dt):
         self.physics(dt)
         self.movement()
+        self.animate('idle', 5 * dt)

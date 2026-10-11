@@ -62,9 +62,9 @@ class Scene(State):
 
     def draw(self, screen):
         screen.fill(COLOURS["red"])
+
         self.drawn_sprites.draw(screen)
         # Adding some debugging things
         self.debugger(
             [(round(self.game.clock.get_fps(),2)),
-             (round(self.player.vel,2)) ]
-        )
+             (round(self.player.vel,2)) ])

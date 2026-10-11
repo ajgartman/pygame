@@ -1,3 +1,5 @@
+import os
+
 import pygame, sys
 
 from settings import *
@@ -18,11 +20,36 @@ class Game:
         self.splash_screen = SplashScreen(self)
         self.states.append(self.splash_screen)
 
-
     def render_text(self,text:str,colour,font,pos, centralised=True):
         surf = font.render(str(text),False,colour)
         rect = surf.get_rect(center=pos) if centralised else surf.get_rect(topleft=pos)
         self.screen.blit(surf,rect)
+
+
+    def custom_cursor(self,screen):
+        pygame.mouse.set_visible(False)
+        cursor_image = pygame.image.load('assets/cursor.png').convert_alpha()
+        cursor_rect = cursor_image.get_frect(center=pygame.mouse.get_pos())
+        cursor_image.set_alpha(150)
+        self.screen.blit(cursor_image, cursor_rect.center)
+
+
+    def get_images(self,path):
+        images = []
+        for file in os.listdir(path):
+            full_path = os.path.join(path,file)
+            img = pygame.image.load(full_path).convert_alpha()
+            images.append(img)
+        return images
+
+
+    def get_animations(self,path):
+        animations = {}
+
+        for file_name in os.listdir(path):
+            animations.update({file_name:[]})
+        return animations
+
 
     def get_inputs(self):
 
@@ -88,6 +115,7 @@ class Game:
                 elif event.button == 2:
                     INPUTS["scroll_up"] = False
 
+
     def reset_inputs(self):
         for key in INPUTS:
             INPUTS[key] = False
@@ -99,6 +127,7 @@ class Game:
             self.get_inputs()
             self.states[-1].update(dt)
             self.states[-1].draw(self.screen)
+            self.custom_cursor(self.screen)
             pygame.display.update()
 
 
