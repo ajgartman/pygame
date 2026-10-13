@@ -1,6 +1,9 @@
 import pygame
+from camera import Camera
+from pytmx.util_pygame import load_pygame
 from characters import Player
 from settings import *
+from objects import Object
 
 class State:
 
@@ -43,27 +46,40 @@ class Scene(State):
 
     def __init__(self,game):
         State.__init__(self,game)
+        self.camera = Camera(self)
         self.update_sprites = pygame.sprite.Group()
         self.drawn_sprites = pygame.sprite.Group()
-        self.player = Player(self.game,self,[self.update_sprites,self.drawn_sprites],(WIDTH/2,HEIGHT/2),"player")
+        self.tmx_data = load_pygame("scenes/0/0.tmx")
+        self.create_scene()
 
+
+    def create_scene(self):
+        layers = []
+        for layer in self.tmx_data.layers:
+            layers.append(layer.name)
+
+        if "blocks" in layers:
+            for x, y, surf in self.tmx_data.get_layer_by_name("blocks").tiles():
+                Object([self.drawn_sprites],(x*TILE_SIZE,y*TILE_SIZE),surf)
+
+
+        if "entries" in layers:
+            for obj in self.tmx_data.get_layer_by_name("entries"):
+                if obj.name == "0":
+                    self.player = Player(self.game, self, [self.update_sprites, self.drawn_sprites],
+                                         (obj.x,obj.y), "player")
 
 
     def debugger(self,debug_list):
         for index, name in enumerate(debug_list):
-            self.game.render_text(name,
-                                  COLOURS["white"],
-                                  self.game.font,
-                                  (10,15 * index),
-                                  False)
+            self.game.render_text(name,COLOURS["white"],self.game.font,(10,15 * index),False)
 
     def update(self, dt):
         self.update_sprites.update(dt)
+        self.camera.update(dt,self.player)
 
     def draw(self, screen):
-        screen.fill(COLOURS["red"])
-
-        self.drawn_sprites.draw(screen)
+        self.camera.draw(screen,self.drawn_sprites)
         # Adding some debugging things
         self.debugger(
             [(round(self.game.clock.get_fps(),2)),

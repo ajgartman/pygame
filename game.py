@@ -1,7 +1,5 @@
 import os
-
 import pygame, sys
-
 from settings import *
 from state import SplashScreen
 
@@ -10,7 +8,7 @@ class Game:
     def __init__(self):
         pygame.init()
         self.clock = pygame.time.Clock()
-        self.screen = pygame.display.set_mode((WIDTH,HEIGHT))
+        self.screen = pygame.display.set_mode((WIDTH,HEIGHT),pygame.FULLSCREEN|pygame.SCALED)
         self.font = pygame.font.Font(FONT,TILE_SIZE)
         self.running = True
         self.fps = 60

@@ -1,5 +1,4 @@
 import pygame
-
 from settings import *
 
 # Base statistics class
@@ -27,7 +26,11 @@ class NPC(pygame.sprite.Sprite):
 
         for animation in self.animations.keys():
             full_path = path + animation
-            self.animations[animation] = self.game.get_images(full_path)
+            frames = self.game.get_images(full_path)
+
+            self.animations[animation] = [pygame.transform.scale(frame,(frame.get_width() * 1.5,frame.get_height() * 1.5)) for frame in frames]
+
+
 
     def animate(self,state,fps,loop=True):
         self.frame_index += fps
@@ -81,4 +84,8 @@ class Player(NPC):
     def update(self,dt):
         self.physics(dt)
         self.movement()
-        self.animate('idle', 5 * dt)
+        # Changing the animation depending on the velocity!
+        if self.vel.magnitude() < 1:
+            self.animate('idle', 5 * dt)
+        else:
+            self.animate('run', 5 * dt)
