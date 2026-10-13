@@ -60,14 +60,13 @@ class Scene(State):
 
         if "blocks" in layers:
             for x, y, surf in self.tmx_data.get_layer_by_name("blocks").tiles():
-                Object([self.drawn_sprites],(x*TILE_SIZE,y*TILE_SIZE),surf)
-
+                Object([self.drawn_sprites],(x*TILE_SIZE,y*TILE_SIZE),"blocks",surf)
 
         if "entries" in layers:
             for obj in self.tmx_data.get_layer_by_name("entries"):
                 if obj.name == "0":
                     self.player = Player(self.game, self, [self.update_sprites, self.drawn_sprites],
-                                         (obj.x,obj.y), "player")
+                                         (obj.x,obj.y),"characters", "player")
 
 
     def debugger(self,debug_list):

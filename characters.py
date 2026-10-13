@@ -4,11 +4,12 @@ from settings import *
 # Base statistics class
 
 class NPC(pygame.sprite.Sprite):
-    def __init__(self,game,scene,groups,pos,name):
+    def __init__(self,game,scene,groups,pos,z,name):
         super().__init__(groups)
 
         self.game = game
         self.scene = scene
+        self.z = z
         self.name = name
         self.import_images(f'assets/characters/{self.name}/')
         self.frame_index = 0
@@ -28,13 +29,10 @@ class NPC(pygame.sprite.Sprite):
             full_path = path + animation
             frames = self.game.get_images(full_path)
 
-            self.animations[animation] = [pygame.transform.scale(frame,(frame.get_width() * 1.5,frame.get_height() * 1.5)) for frame in frames]
-
-
+            self.animations[animation] = [pygame.transform.scale(frame,(frame.get_width(),frame.get_height())) for frame in frames]
 
     def animate(self,state,fps,loop=True):
         self.frame_index += fps
-
         if self.frame_index >= len(self.animations[state])-1:
             if loop:
                 self.frame_index = 0
@@ -63,8 +61,8 @@ class NPC(pygame.sprite.Sprite):
 
 
 class Player(NPC):
-    def __init__(self,game,scene,groups,pos,name):
-        super().__init__(game,scene,groups,pos,name)
+    def __init__(self,game,scene,groups,pos, z, name):
+        super().__init__(game,scene,groups,pos,z,name)
 
     def movement(self):
         if INPUTS["left"]:

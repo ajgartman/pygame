@@ -1,7 +1,7 @@
 from pygame.math import Vector2 as vec
 
 # Settings
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 400, 224
 TILE_SIZE = 16
 FONT = 'assets/game_of_squids.ttf'
 
@@ -21,3 +21,11 @@ COLOURS = {"black":(0,0,0),
            "red":(200,100,100),
            "green":(100,200,100),
            "blue":(100,100,200)}
+
+
+LAYERS = ['background',
+          'objects',
+          'characters',
+          "blocks",
+          'particles',
+          "foreground "]
