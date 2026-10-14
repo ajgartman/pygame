@@ -3,7 +3,6 @@ import pygame, sys
 from settings import *
 from state import SplashScreen
 
-
 class Game:
     def __init__(self):
         pygame.init()
