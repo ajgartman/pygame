@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="2">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="3">
  <editorsettings>
   <export target="0.csv" format="csv"/>
  </editorsettings>
  <tileset firstgid="1" source="../../assets/tilesets/tileset_scaled.tsx"/>
  <objectgroup id="3" name="entries">
   <object id="1" name="0" x="239" y="154">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="entities">
+  <object id="2" name="npc" x="278.788" y="230.303">
    <point/>
   </object>
  </objectgroup>

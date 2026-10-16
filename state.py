@@ -1,7 +1,7 @@
 import pygame
 from camera import Camera
 from pytmx.util_pygame import load_pygame
-from characters import Player
+from characters import Player, NPC
 from settings import *
 from objects import Object, Wall
 
@@ -67,10 +67,14 @@ class Scene(State):
 
         if "entries" in layers:
             for obj in self.tmx_data.get_layer_by_name("entries"):
-                if obj.name == "0": # Creating a player instance - setting the entry point!
+                if obj.name == "0": # Creating a andrzej instance - setting the entry point!
                     self.player = Player(self.game, self, [self.update_sprites, self.drawn_sprites],
-                                         (obj.x,obj.y),"blocks", "player")
-
+                                         (obj.x,obj.y),"blocks", "andrzej")
+        if "entities" in layers:
+            for obj in self.tmx_data.get_layer_by_name("entities"):
+                if obj.name == "npc": # Creating a andrzej instance - setting the entry point!
+                    self.npc = NPC(self.game, self, [self.update_sprites, self.drawn_sprites],
+                                         (obj.x,obj.y),"blocks", "mich")
 
     def debugger(self,debug_list):
         for index, name in enumerate(debug_list):
@@ -85,4 +89,5 @@ class Scene(State):
         # Adding some debugging things
         self.debugger(
             [(round(self.game.clock.get_fps(),2)),
-             (round(self.player.vel,2)) ])
+             (round(self.player.vel,2)),
+             str("state " + str(self.player.state))])
