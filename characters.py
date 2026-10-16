@@ -3,7 +3,6 @@ from character_states import Idle,Walk,Jump
 from settings import *
 
 # Base statistics class
-
 class NPC(pygame.sprite.Sprite):
     def __init__(self,game,scene,groups,pos,z,name):
         super().__init__(groups)
@@ -24,6 +23,7 @@ class NPC(pygame.sprite.Sprite):
         self.fric = -15
         self.move = {"left":False,"right":False,"up":False,"down":False,}
         self.state = Idle()
+        self.controllable = False
 
     def import_images(self,path):
         self.animations = self.game.get_animations(path)
@@ -117,9 +117,15 @@ class NPC(pygame.sprite.Sprite):
         self.state.update(dt,self)
 
 
+    def return_coordinates(self):
+        return self.rect.centerx, self.rect.centery
+
+
 class Player(NPC):
     def __init__(self,game,scene,groups,pos, z, name):
         super().__init__(game,scene,groups,pos,z,name)
+        # Overwriting the controllable parameter, this class responds to the user inputs!
+        self.controllable = True
 
     def movement(self):
         if INPUTS["left"]: self.acc.x = -self.force
@@ -129,3 +135,10 @@ class Player(NPC):
         if INPUTS["up"]: self.acc.y = -self.force
         elif INPUTS["down"]: self.acc.y = self.force
         else: self.acc.y = 0
+
+    def vec_to_mouse(self,speed):
+        # function returns the mouse pointer vector representation
+        direction = vec(pygame.mouse.get_pos()) - (vec(self.rect.center) - vec(self.scene.camera.offset))
+        if direction.length() > 0: direction.normalize_ip()
+        return direction
+

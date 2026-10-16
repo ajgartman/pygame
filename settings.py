@@ -3,7 +3,7 @@ from pygame.math import Vector2 as vec
 # Settings
 WIDTH, HEIGHT = 400, 224
 TILE_SIZE = 16
-FONT = 'assets/game_of_squids.ttf'
+FONT = 'assets/imaki-oblique.ttf'
 
 INPUTS = {"escape":False,
           "space":False,

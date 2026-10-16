@@ -3,7 +3,7 @@ from camera import Camera
 from pytmx.util_pygame import load_pygame
 from characters import Player, NPC
 from settings import *
-from objects import Object, Wall
+from objects import Wall
 
 
 class State:
@@ -72,7 +72,7 @@ class Scene(State):
                                          (obj.x,obj.y),"blocks", "andrzej")
         if "entities" in layers:
             for obj in self.tmx_data.get_layer_by_name("entities"):
-                if obj.name == "npc": # Creating a andrzej instance - setting the entry point!
+                if obj.name == "npc": # Creating a mich npc instance - setting the entry point!
                     self.npc = NPC(self.game, self, [self.update_sprites, self.drawn_sprites],
                                          (obj.x,obj.y),"blocks", "mich")
 
@@ -86,8 +86,12 @@ class Scene(State):
 
     def draw(self, screen):
         self.camera.draw(screen,self.drawn_sprites)
+        # Trying to add some sprite names on the screen.
+        # Calling the function to get player coordinates
+        x,y = self.player.return_coordinates()
+        self.game.render_text(str(self.player.name), COLOURS["white"], self.game.font, (x-30,y-70 ), False)
         # Adding some debugging things
         self.debugger(
             [(round(self.game.clock.get_fps(),2)),
              (round(self.player.vel,2)),
-             str("state " + str(self.player.state))])
+             self.player.return_coordinates()])
